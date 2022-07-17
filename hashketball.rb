@@ -1,3 +1,5 @@
+require 'pry'
+
 # Write your code below game_hash
 def game_hash
   {
@@ -127,3 +129,28 @@ def game_hash
 end
 
 # Write code here
+def num_points_scored(player_name)
+    # binding.pry
+    game_hash.each do |location, team_data|
+      #are you ABSOLUTELY SURE what 'location' and 'team data' are? use binding.pry to find out!
+    #   binding.pry
+        team_data.each do |attribute, data|
+            #are you ABSOLUTELY SURE what 'attribute' and 'team data' are? use binding.pry to find out!
+            # binding.pry
+    
+            #what is 'data' at each loop throughout .each block? when will the following line of code work and when will it break?
+            if attribute == :players
+                data.each do |data_item|
+                    # binding.pry
+
+                    if data_item[:player_name] == player_name
+                        return data_item[:points]
+                    end
+                end
+            end
+        end
+    end
+end
+
+puts num_points_scored('Alan Anderson')
+puts num_points_scored("DeSagna Diop")
