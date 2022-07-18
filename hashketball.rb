@@ -129,32 +129,22 @@ def game_hash
 end
 
 # Write code here
+
+# put all players together in one Hash
+def team_players
+    game_hash[:home][:players] + game_hash[:away][:players]
+end
+
+def locate_player(player_name)
+    player_stats = team_players.find {|player| player[:player_name] == player_name}
+end
+
 def num_points_scored(player_name)
-    game_hash.each do |location, team_data|
-        team_data.each do |attribute, data|    
-            if attribute == :players
-                data.each do |data_item|
-                    if data_item[:player_name] == player_name
-                        return data_item[:points]
-                    end
-                end
-            end
-        end
-    end
+    locate_player(player_name)[:points]
 end
 
 def shoe_size(player_name)
-    game_hash.each do |location, team_data|
-        team_data.each do |attribute, data|
-            if attribute == :players
-                data.each do |data_item|
-                    if data_item[:player_name] == player_name
-                        return data_item[:shoe]
-                    end
-                end
-            end
-        end
-    end
+    locate_player(player_name)[:shoe]
 end
 
 def team_colors(team_name)
@@ -166,80 +156,40 @@ def team_colors(team_name)
 end
 
 def team_names
-    teams = []
-    game_hash.each do |location, team_data|
-        teams << team_data[:team_name]
+    game_hash.map do |location, team_data|
+        team_data[:team_name]
     end
-
-    return teams
 end
 
 def player_numbers(team_name)
-    player_numbers = []
-
     game_hash.each do |location, team_data|
         if team_data[:team_name] == team_name
-            team_data.each do |attribute, data|
-                if attribute == :players
-                    data.each do |data_item|
-                        player_numbers << data_item[:number]
-                    end
-                end
-            end
+            return team_data[:players].map {|player| player[:number]}
         end
     end
-
-    return player_numbers
 end
 
 def player_stats(player_name)
-    game_hash.each do |location, team_data|
-        team_data.each do |attribute, data|
-            if attribute == :players
-                data.each do |data_item|
-                    if data_item[:player_name] == player_name
-                        return data_item
-                    end
-                end
-            end
-        end
-    end
+    locate_player(player_name)
 end
 
-def player_largest_shoe_size
+def find_largest_shoe_size
     largest_shoe_size = 0
     player_name = ""
 
-    game_hash.each do |location, team_data|
-        team_data.each do |attribute, data|
-            if attribute == :players
-                data.each do |data_item|
-                    if data_item[:shoe] > largest_shoe_size
-                        largest_shoe_size = data_item[:shoe]
-                        player_name = data_item[:player_name]
-                    end
-                end
-            end
+    team_players.each do |player|
+        if player[:shoe] > largest_shoe_size
+            largest_shoe_size = player[:shoe]
+            player_name = player[:player_name]
         end
     end
 
-    return player_name
+    player_name
 end
 
 def big_shoe_rebounds
-    player_largest_shoe = player_largest_shoe_size
-
-    game_hash.each do |location, team_data|
-        team_data.each do |attribute, data|
-            if attribute == :players
-                data.each do |data_item|
-                    if data_item[:player_name] == player_largest_shoe
-                        return data_item[:rebounds]
-                    end
-                end
-            end
-        end
-    end
+    player_largest_shoe = find_largest_shoe_size
+    locate_player(player_largest_shoe)[:rebounds]
 end
 
 # puts num_points_scored('Alan Anderson')
@@ -261,4 +211,4 @@ end
 
 # p player_largest_show_size
 
-p big_shoe_rebounds
+# p big_shoe_rebounds
