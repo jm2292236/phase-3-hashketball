@@ -130,19 +130,10 @@ end
 
 # Write code here
 def num_points_scored(player_name)
-    # binding.pry
     game_hash.each do |location, team_data|
-      #are you ABSOLUTELY SURE what 'location' and 'team data' are? use binding.pry to find out!
-    #   binding.pry
-        team_data.each do |attribute, data|
-            #are you ABSOLUTELY SURE what 'attribute' and 'team data' are? use binding.pry to find out!
-            # binding.pry
-    
-            #what is 'data' at each loop throughout .each block? when will the following line of code work and when will it break?
+        team_data.each do |attribute, data|    
             if attribute == :players
                 data.each do |data_item|
-                    # binding.pry
-
                     if data_item[:player_name] == player_name
                         return data_item[:points]
                     end
@@ -152,5 +143,122 @@ def num_points_scored(player_name)
     end
 end
 
-puts num_points_scored('Alan Anderson')
-puts num_points_scored("DeSagna Diop")
+def shoe_size(player_name)
+    game_hash.each do |location, team_data|
+        team_data.each do |attribute, data|
+            if attribute == :players
+                data.each do |data_item|
+                    if data_item[:player_name] == player_name
+                        return data_item[:shoe]
+                    end
+                end
+            end
+        end
+    end
+end
+
+def team_colors(team_name)
+    game_hash.each do |location, team_data|
+        if team_data[:team_name] == team_name
+            return team_data[:colors]
+        end
+    end
+end
+
+def team_names
+    teams = []
+    game_hash.each do |location, team_data|
+        teams << team_data[:team_name]
+    end
+
+    return teams
+end
+
+def player_numbers(team_name)
+    player_numbers = []
+
+    game_hash.each do |location, team_data|
+        if team_data[:team_name] == team_name
+            team_data.each do |attribute, data|
+                if attribute == :players
+                    data.each do |data_item|
+                        player_numbers << data_item[:number]
+                    end
+                end
+            end
+        end
+    end
+
+    return player_numbers
+end
+
+def player_stats(player_name)
+    game_hash.each do |location, team_data|
+        team_data.each do |attribute, data|
+            if attribute == :players
+                data.each do |data_item|
+                    if data_item[:player_name] == player_name
+                        return data_item
+                    end
+                end
+            end
+        end
+    end
+end
+
+def player_largest_shoe_size
+    largest_shoe_size = 0
+    player_name = ""
+
+    game_hash.each do |location, team_data|
+        team_data.each do |attribute, data|
+            if attribute == :players
+                data.each do |data_item|
+                    if data_item[:shoe] > largest_shoe_size
+                        largest_shoe_size = data_item[:shoe]
+                        player_name = data_item[:player_name]
+                    end
+                end
+            end
+        end
+    end
+
+    return player_name
+end
+
+def big_shoe_rebounds
+    player_largest_shoe = player_largest_shoe_size
+
+    game_hash.each do |location, team_data|
+        team_data.each do |attribute, data|
+            if attribute == :players
+                data.each do |data_item|
+                    if data_item[:player_name] == player_largest_shoe
+                        return data_item[:rebounds]
+                    end
+                end
+            end
+        end
+    end
+end
+
+# puts num_points_scored('Alan Anderson')
+# puts num_points_scored("DeSagna Diop")
+
+# puts shoe_size('Alan Anderson')
+# puts shoe_size("DeSagna Diop")
+
+# p team_colors('Brooklyn Nets')
+# puts team_colors("Charlotte Hornets")
+
+# p team_names
+
+# p player_numbers('Brooklyn Nets')
+# puts player_numbers("Charlotte Hornets")
+
+# p player_stats('Alan Anderson')
+# puts player_stats("DeSagna Diop")
+
+# p player_largest_show_size
+
+p big_shoe_rebounds
